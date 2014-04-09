@@ -1,6 +1,13 @@
 #include  <stdio.h>
 
 int main (int argc, char *argv[]){
-    printf("%s %s",argv[1], argv[2]);
+    FILE *inFile;
+    inFile = fopen(argv[1], "r");
+    if (inFile == NULL)
+    {
+        fprintf(stdout, "Error: Cannot open input file [%s].\n", argv[1]);
+        return 0;
+    }
+    printf("%s",argv[1]);
     return 0;
 }
