@@ -48,6 +48,8 @@ int main (int argc, char *argv[]){
 		}
 	}	
 	int count=0;
+	int tempf,templ;
+	double tempD;
 	while (!feof(inFile))
 	{
 		int fcity, lcity;
@@ -56,16 +58,22 @@ int main (int argc, char *argv[]){
 		fscanf(inFile, "%d", &fcity);
 		fscanf(inFile, "%d", &lcity);
 		fscanf(inFile, "%lf", &dist);
-		error = getError(fcity,lcity,dist);
-		if (error && error[0] == '\0')
+		if (!(tempf == fcity && templ == lcity && tempD == dist))
 		{
-			routes[fcity-1][lcity-1].time += dist;
-			routes[fcity-1][lcity-1].transactions += 1;
-			fprintf(outFile, "%2d %2d %5.2f\n", fcity,lcity,dist);
-			count += 1;
+			error = getError(fcity,lcity,dist);
+			if (error && error[0] == '\0')
+			{
+				routes[fcity-1][lcity-1].time += dist;
+				routes[fcity-1][lcity-1].transactions += 1;
+				fprintf(outFile, "%2d %2d %5.2f\n", fcity,lcity,dist);
+				count += 1;
+			}
+			else
+				fprintf(outFile, "%2d %2d %5.2f %s\n", fcity,lcity,dist,error);
+			tempf = fcity;
+			templ = lcity;
+			tempD = dist;
 		}
-		else
-			fprintf(outFile, "%2d %2d %5.2f %s\n", fcity,lcity,dist,error);
 	}
 	fprintf(outFile, "\nNumber of valid records: %d\n\n",count);
 	avgRoutePrint(outFile, routes);
